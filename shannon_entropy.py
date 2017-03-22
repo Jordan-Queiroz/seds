@@ -1,5 +1,6 @@
 # Provavelmente esse script arredonda 0,005 para cima
 
+import sys
 import numpy
 import scipy.stats
 
@@ -48,7 +49,35 @@ def entropy(labels):
 
     return ent
 
+def listtoarray(elements_aux):
+    elements = numpy.zeros(len(elements_aux),dtype=object)
+
+    for i in range(len(elements_aux)):
+        elements[i] = elements_aux.pop()
+
+    return elements
+
+def readfile(path):
+    f = open(path,"r")
+
+    nlines = 0
+    elements_aux = []
+
+    # Reading files' elements
+    for line in f:
+        parts = line.split(',')
+        parts[1] = parts[1].replace("\"","")
+        parts[1] = parts[1].replace("\n","")
+        elements_aux.append(parts[1])
+
+    elements = listtoarray(elements_aux)
+
+    return elements
+
 if __name__ == "__main__":
 #    a = numpy.array(["p", "p", "p", "p", "p", "p", "p", "p", "p", "n", "n", "n", "n", "n", "n", "n"])
-    a = numpy.array(["j", "o", "r", "d", "a", "n"])
-    print(entropy(a))
+#    a = numpy.array(["j", "o", "r", "d", "a", "n"])
+#    print(entropy(a))
+    elements = readfile(sys.argv[1])
+#    print(len(elements))
+    print(entropy(elements))
